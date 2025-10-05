@@ -8,19 +8,22 @@ class Doctor {
             doctorName,
             doctorContactInfo,
             departmentName,
-            availability: true
+            availability : true
         };
+        if (!doctorName || !doctorContactInfo || !departmentName) {
+            throw new Error("No doctors registered yet.");
+            }
         this.doctors.push(doctor);
         return "Registration Successful";
+        }
+
+        viewRegisteredDoctors() {
+            return this.doctors
     }
 
-    viewRegisteredDoctors() {
-        return this.doctors;
-    }
-
-    logAvailability(doctorIndex, choice) {
+    logAvailability(doctorIndex, isAvailable) {
         if (this.doctors[doctorIndex]) {
-            this.doctors[doctorIndex].availability = choice;
+            this.doctors[doctorIndex].availability = isAvailable;
         }
     }
 }

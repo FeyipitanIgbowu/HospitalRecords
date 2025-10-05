@@ -1,26 +1,42 @@
-let prompt = require('prompt-sync')();
-const {doctorRegistration, HospitalRecords} = require('./HospitalRecords');
+const prompt = require('prompt-sync')();
+const { HospitalRecords } = require('./HospitalRecords');
 
+const hospital = new HospitalRecords();
 
-let doctor = new HospitalRecords.doctorRegistration(hospital);
+const menu = `
+            ===== Welcome To Feyi's Hospital =====
+                1 -> Register Doctor
+                2 -> View Registered Doctors
+                3 -> Update Doctor Availability
+                    `
+console.log(menu);
+let menuOption = parseInt(prompt("Select an option: "));
 
-let welcomeMessage = `===== Welcome To Feyi's Hospital =====
-                            1 -> Register As a Doctor
-                            2 -> View Registered Doctors
-                            
-                            `
-console.log(welcomeMessage);
-let option = prompt("Select an option")
-let choice = parseInt(option)
-switch (choice) {
-    case 1 :
-        doctorName = prompt("Please enter a valid name: ");
-        doctorContactInfo = prompt("Please enter your contact information: ");
-        departmentName = prompt("What Department do you belong to?: ");
-        console.log(hospital.doctorRegistration(doctorRegistration(doctorName, doctorContactInfo, departmentName)));
-        break
+switch (menuOption) {
+    case 1:
+        const doctorName = prompt("Doctor name: ");
+        const doctorContact = prompt("Contact info: ");
+        const departmentName = prompt("Department: ");
+        console.log(hospital.doctor.doctorRegistration(doctorName, doctorContact, departmentName));
+        break;
 
     case 2:
-        console.log(hospital.viewRegisteredDoctors())
+        const doctors = hospital.doctor.viewRegisteredDoctors();
+            doctors.forEach(
+                doctor => console.log(` 
+                "Doctor Name" - ${doctor.doctorName} /n 
+                "Doctor's Department" - ${doctor.departmentName} /n 
+                "Doctor's Availability" - ${doctor.availability ? "Available" : "Unavailable"}`
+                ));
+        break;
+
+    case 3:
+        const index = parseInt(prompt("Enter doctor number (starting from 0): "));
+        const answer = prompt("Is the doctor available? (yes/no): ").toLowerCase();
+        const isAvailable = answer === "yes";
+        hospital.doctor.logAvailability(index, isAvailable);
+        console.log("Availability updated!");
+        break;
+
 
 }
